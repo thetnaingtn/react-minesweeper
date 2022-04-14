@@ -1,9 +1,9 @@
 import { createContext, PropsWithChildren, useReducer } from 'react';
 import { BlockState, Difficulty } from '../types';
 
-export const MINES_EASY_GEME = 10;
-export const MINES_MEDIUM_GEME = 40;
-export const MINES_HARD_GEME = 99;
+export const MINES_EASY_GAME = 10;
+export const MINES_MEDIUM_GAME = 40;
+export const MINES_HARD_GAME = 99;
 
 type GameStatus = 'ready' | 'play' | 'won' | 'lost';
 

@@ -4,9 +4,9 @@ import IconTimer from '~icons/carbon/timer';
 
 import {
   GameContext,
-  MINES_EASY_GEME,
-  MINES_MEDIUM_GEME,
-  MINES_HARD_GEME,
+  MINES_EASY_GAME,
+  MINES_MEDIUM_GAME,
+  MINES_HARD_GAME,
 } from './context';
 import { Difficulty } from './types';
 import Button from './components/Button';
@@ -18,9 +18,9 @@ function App() {
 
   function handleGameMode(difficulty: Difficulty) {
     const noOfMines = {
-      easy: MINES_EASY_GEME,
-      medium: MINES_MEDIUM_GEME,
-      hard: MINES_HARD_GEME,
+      easy: MINES_EASY_GAME,
+      medium: MINES_MEDIUM_GAME,
+      hard: MINES_HARD_GAME,
     };
     dispatch({
       type: 'new game',
