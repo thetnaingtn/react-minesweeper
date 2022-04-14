@@ -1,6 +1,11 @@
 import IconMine from '~icons/mdi/mine';
+import { BlockState } from '../types';
 
-export default function MineBlock() {
+type MineBlockProps = {
+  block: BlockState;
+};
+
+export default function MineBlock({ block }: MineBlockProps) {
   return (
     <button className="flex items-center justify-center min-w-8 min-h-8">
       <IconMine />
