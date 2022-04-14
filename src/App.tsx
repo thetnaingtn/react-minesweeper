@@ -14,7 +14,7 @@ import MineBlock from './components/MineBlock';
 
 function App() {
   const { state, dispatch } = useContext(GameContext);
-  const { board } = state;
+  const { board, startMs } = state;
 
   function handleGameMode(difficulty: Difficulty) {
     const noOfMines = {
@@ -39,7 +39,7 @@ function App() {
       </div>
       <div className="flex gap-10 justify-center">
         <div className="flex text-2xl gap-1 items-center font-mono">
-          <IconTimer />0
+          <IconTimer /> {startMs}
         </div>
         <div className="flex text-2xl gap-1 items-center font-mono">
           <IconMine />0
