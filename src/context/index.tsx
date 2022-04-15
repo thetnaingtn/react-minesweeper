@@ -53,6 +53,34 @@ function newGame(difficulty: Difficulty): BlockState[][] {
   }
 }
 
+function randomRange(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
+
+function randomInt(min: number, max: number) {
+  return Math.round(randomRange(min, max));
+}
+
+function generateMine(state: GameState, initial: BlockState) {
+  function placeRandom(): boolean {
+    let height = state.board.length,
+      width = state.board[0].length;
+    const x = randomInt(0, width - 1);
+    const y = randomInt(0, height - 1);
+    console.log({ y, x });
+    const block = state.board[y][x];
+    if (initial.x - block.x <= 1 && initial.y - block.y <= 1) return false;
+    if (block.mine) return false;
+    block.mine = true;
+    state.board[y][x] = block;
+    return true;
+  }
+  Array.from({ length: state.mines }, () => null).forEach(() => {
+    let placed = false;
+    while (!placed) placed = placeRandom();
+  });
+}
+
 const gameState: GameState = {
   mines: 10,
   board: newGame('easy'),
@@ -86,16 +114,17 @@ function gameStateReducer(state: GameState, action: Actions): GameState {
       } = action;
 
       const newState = JSON.parse(JSON.stringify(state)) as GameState;
+      let block = { ...newState.board[y][x] };
       if (state.status === 'ready') {
         newState.status = 'play';
         newState.startMs = +new Date();
       }
       if (!state.mineGenerated) {
-        // TODO: Generate mines
+        generateMine(newState, block);
         newState.mineGenerated = true;
       }
       if (state.status !== 'play' || flaged) return newState;
-      let block = { ...newState.board[y][x], revealed: true };
+      block.revealed = true;
       newState.board[y][x] = block;
 
       return newState;
