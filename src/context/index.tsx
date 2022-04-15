@@ -32,6 +32,14 @@ type GameContext = {
   dispatch: React.Dispatch<Actions>;
 };
 
+type Actions =
+  | {
+      type: 'new game';
+      payload: { difficulty: Difficulty; mines: number };
+    }
+  | { type: 'play'; payload: BlockState }
+  | { type: 'flaged'; payload: BlockState };
+
 function reset(width: number, height: number): BlockState[][] {
   return Array(height)
     .fill(0)
@@ -127,20 +135,12 @@ const gameState: GameState = {
   mineGenerated: false,
   startMs: 0,
   endMs: 0,
-  status: 'play',
+  status: 'ready',
 };
-
-type Actions =
-  | {
-      type: 'new game';
-      payload: { difficulty: Difficulty; mines: number };
-    }
-  | { type: 'play'; payload: BlockState };
 
 function gameStateReducer(state: GameState, action: Actions): GameState {
   switch (action.type) {
     case 'new game': {
-      console.log('new game');
       const { mines, difficulty } = action.payload;
       return {
         ...state,
@@ -155,18 +155,24 @@ function gameStateReducer(state: GameState, action: Actions): GameState {
 
       const newState = JSON.parse(JSON.stringify(state)) as GameState;
       let block = { ...newState.board[y][x] };
-      if (state.status === 'ready') {
+      if (newState.status === 'ready') {
         newState.status = 'play';
         newState.startMs = +new Date();
       }
-      if (!state.mineGenerated) {
+      if (!newState.mineGenerated) {
         generateMine(newState, block);
         newState.mineGenerated = true;
       }
-      if (state.status !== 'play' || flaged) return newState;
+      if (newState.status !== 'play' || flaged) return newState;
       block.revealed = true;
       newState.board[y][x] = block;
 
+      return newState;
+    }
+    case 'flaged': {
+      const { x, y } = action.payload;
+      const newState = JSON.parse(JSON.stringify(state)) as GameState;
+      newState.board[y][x].flaged = !newState.board[y][x].flaged;
       return newState;
     }
     default:
