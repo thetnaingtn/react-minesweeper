@@ -67,9 +67,12 @@ function generateMine(state: GameState, initial: BlockState) {
       width = state.board[0].length;
     const x = randomInt(0, width - 1);
     const y = randomInt(0, height - 1);
-    console.log({ y, x });
     const block = state.board[y][x];
-    if (initial.x - block.x <= 1 && initial.y - block.y <= 1) return false;
+    if (
+      Math.abs(initial.x - block.x) <= 1 &&
+      Math.abs(initial.y - block.y) <= 1
+    )
+      return false;
     if (block.mine) return false;
     block.mine = true;
     state.board[y][x] = block;
