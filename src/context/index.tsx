@@ -5,6 +5,17 @@ export const MINES_EASY_GAME = 10;
 export const MINES_MEDIUM_GAME = 40;
 export const MINES_HARD_GAME = 99;
 
+const directions = [
+  [1, 1],
+  [1, 0],
+  [1, -1],
+  [0, -1],
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, 1],
+];
+
 type GameStatus = 'ready' | 'play' | 'won' | 'lost';
 
 type GameState = {
@@ -82,6 +93,32 @@ function generateMine(state: GameState, initial: BlockState) {
     let placed = false;
     while (!placed) placed = placeRandom();
   });
+  updateNumbers(state.board);
+}
+
+function updateNumbers(board: BlockState[][]) {
+  board.forEach((row) => {
+    row.forEach((block) => {
+      if (block.mine) return;
+      getSiblings(board, block).forEach((b) => {
+        if (b.mine) block.adjacentMines += 1;
+      });
+    });
+  });
+}
+
+function getSiblings(board: BlockState[][], block: BlockState) {
+  let height = board.length,
+    width = board[0].length;
+  return directions
+    .map(([dx, dy]) => {
+      const x2 = block.x + dx;
+      const y2 = block.y + dy;
+
+      if (x2 < 0 || x2 >= width || y2 < 0 || y2 >= height) return undefined;
+      return board[y2][x2];
+    })
+    .filter(Boolean) as BlockState[];
 }
 
 const gameState: GameState = {
