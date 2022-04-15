@@ -139,6 +139,24 @@ function expendZero(board: BlockState[][], block: BlockState) {
   });
 }
 
+function gameOver(gameState: GameState, status: GameStatus) {
+  gameState.status = status;
+  gameState.endMs = +Date.now();
+
+  if (status === 'lost') {
+    showAllMine(gameState);
+    setTimeout(() => {
+      alert('lost');
+    }, 10);
+  }
+}
+
+function showAllMine(gameState: GameState) {
+  gameState.board.flat().forEach((block) => {
+    if (block.mine) block.revealed = true;
+  });
+}
+
 const gameState: GameState = {
   mines: 10,
   board: newGame('easy'),
@@ -167,7 +185,7 @@ function gameStateReducer(state: GameState, action: Actions): GameState {
       let block = { ...newState.board[y][x] };
       if (newState.status === 'ready') {
         newState.status = 'play';
-        newState.startMs = +new Date();
+        newState.startMs = +Date.now();
       }
       if (!newState.mineGenerated) {
         generateMine(newState, block);
@@ -176,7 +194,10 @@ function gameStateReducer(state: GameState, action: Actions): GameState {
       if (newState.status !== 'play' || flaged) return newState;
       block.revealed = true;
       newState.board[y][x] = block;
-      // TODO: check whether current has mine!
+      if (block.mine) {
+        gameOver(newState, 'lost');
+        return newState;
+      }
       expendZero(newState.board, block);
 
       return newState;
