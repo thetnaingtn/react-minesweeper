@@ -129,6 +129,16 @@ function getSiblings(board: BlockState[][], block: BlockState) {
     .filter(Boolean) as BlockState[];
 }
 
+function expendZero(board: BlockState[][], block: BlockState) {
+  if (block.adjacentMines) return;
+  getSiblings(board, block).forEach((block) => {
+    if (!block.revealed) {
+      if (!block.flaged) block.revealed = true;
+      expendZero(board, block);
+    }
+  });
+}
+
 const gameState: GameState = {
   mines: 10,
   board: newGame('easy'),
@@ -166,6 +176,8 @@ function gameStateReducer(state: GameState, action: Actions): GameState {
       if (newState.status !== 'play' || flaged) return newState;
       block.revealed = true;
       newState.board[y][x] = block;
+      // TODO: check whether current has mine!
+      expendZero(newState.board, block);
 
       return newState;
     }
