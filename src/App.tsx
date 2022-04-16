@@ -28,6 +28,10 @@ function App() {
     });
   }
 
+  const minesLeft = board
+    .flat()
+    .reduce((a, b) => a - (b.flaged ? 1 : 0), state.mines);
+
   return (
     <div>
       Minesweeper
@@ -42,7 +46,8 @@ function App() {
           <IconTimer /> {startMs}
         </div>
         <div className="flex text-2xl gap-1 items-center font-mono">
-          <IconMine />0
+          <IconMine />
+          {minesLeft}
         </div>
       </div>
       <div className="overflow-auto p-5 w-full">
