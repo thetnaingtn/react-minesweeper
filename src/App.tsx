@@ -47,6 +47,19 @@ function App() {
     clearInterval(interval.current);
   }, [state.status]);
 
+  useEffect(() => {
+    if (state.status === 'lost')
+      setTimeout(() => {
+        alert('lost');
+      }, 10);
+  }, [state.status]);
+
+  useEffect(() => {
+    let blocks = board.flat();
+    if (!blocks.some((block) => !block.mine && !block.revealed))
+      dispatch({ type: 'gameover', payload: 'won' });
+  }, [board]);
+
   return (
     <div className="text-center">
       <span className="dark:text-white"> Minesweeper </span>
