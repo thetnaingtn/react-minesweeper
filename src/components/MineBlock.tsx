@@ -46,17 +46,18 @@ export default function MineBlock({ block }: MineBlockProps) {
       }}
       className={`flex items-center justify-center m-1px min-w-8 min-h-8 border-0.5 border-gray-400 border-opacity-10 ${getBlockClass()}`}
     >
-      {block.flaged && (
+      {block.flaged ? (
         <span className="text-red-400">
           <IconFlag />
         </span>
-      )}
-      {block.revealed &&
+      ) : (
+        block.revealed &&
         (function () {
           if (block.mine) return <IconMine color="#fff" />;
           if (block.adjacentMines > 0)
             return <span className="font-semibold">{block.adjacentMines}</span>;
-        })()}
+        })()
+      )}
     </button>
   );
 }
