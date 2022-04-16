@@ -44,8 +44,7 @@ function App() {
       }, 1000);
       return;
     }
-    if (state.status === 'won' || state.status === 'lost')
-      clearInterval(interval.current);
+    clearInterval(interval.current);
   }, [state.status]);
   console.log('nothing');
   return (
