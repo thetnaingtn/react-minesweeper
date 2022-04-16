@@ -46,7 +46,7 @@ function App() {
     }
     clearInterval(interval.current);
   }, [state.status]);
-  console.log('nothing');
+
   return (
     <div className="text-center">
       <span className="dark:text-white"> Minesweeper </span>
