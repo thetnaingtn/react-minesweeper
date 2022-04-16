@@ -11,6 +11,7 @@ import {
 import { Difficulty } from './types';
 import Button from './components/Button';
 import MineBlock from './components/MineBlock';
+import Footer from './components/Footer';
 
 function App() {
   const [timer, setTimer] = useState(0);
@@ -46,17 +47,17 @@ function App() {
     if (state.status === 'won' || state.status === 'lost')
       clearInterval(interval.current);
   }, [state.status]);
-
+  console.log('nothing');
   return (
-    <div>
-      Minesweeper
+    <div className="text-center">
+      <span className="dark:text-white"> Minesweeper </span>
       <div className="flex justify-center p-4 gap-1">
         <Button onClick={() => handleGameMode('easy')}>New Game</Button>
         <Button onClick={() => handleGameMode('easy')}>Easy</Button>
         <Button onClick={() => handleGameMode('medium')}>Medium</Button>
         <Button onClick={() => handleGameMode('hard')}>Hard</Button>
       </div>
-      <div className="flex gap-10 justify-center">
+      <div className="flex gap-10 justify-center dark:text-white">
         <div className="flex text-2xl gap-1 items-center font-mono">
           <IconTimer /> {timer}
         </div>
@@ -77,6 +78,7 @@ function App() {
           </div>
         ))}
       </div>
+      <Footer />
     </div>
   );
 }
